@@ -1,13 +1,13 @@
 <template>
     <div class="mt-10 flex flex-col items-center">
       <span class="text-2xl font-semibold dark:text-gray-100 mb-10">
-        Nejdrive se musite registrovat/prihlasit!
+        You have to register/login first
       </span>
       <button
-        class="p-2 rounded-md bg-cyan-600 text-gray-100"
+        class="p-2 rounded-md bg-blue-600 text-gray-100"
         @click="login"
       >
-        Registrovat/Prihlasit
+        Register/Login
       </button>
     </div>
   </template>
@@ -16,8 +16,6 @@
   
   const user = useSupabaseUser();
   const client = useSupabaseAuthClient();
-  const router = useRouter();
-  
 
   watch(() => user.value, (newValue) => {
     if(newValue){

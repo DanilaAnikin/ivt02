@@ -1,12 +1,12 @@
 <template>
   <div class="mt-10 flex justify-center flex-col max-w-2xl w-full items-center text-slate-200">
-    <div class="flex justify-between items-center w-full">
-      <span v-if="posts.length" class="text-2xl">
+    <div class="flex justify-between items-center w-full mb-5">
+      <span class="text-2xl">
         Posts
       </span>
       <AddPostButton @click="addOpened=true" />
     </div>
-    <div v-for="post in posts" class="flex flex-col w-full gap-4 bg-gray-800 rounded-md py-4 px-5 my-9 h-fit">
+    <div v-for="post in posts" class="flex flex-col w-full gap-4 bg-gray-800 rounded-md py-4 px-5 my-8 h-fit">
       <div class="flex justify-between">
         <span class="block text-2xl text-slate-200 font-serif">{{ post.title }}</span>
         <div class="flex gap-2">
