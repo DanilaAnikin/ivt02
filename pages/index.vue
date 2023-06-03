@@ -99,7 +99,7 @@ const deletePost = async(post: any) => {
   posts.value = posts.value.filter(thatPost => thatPost.id !== post.id);
 }
 
-const addLike = async(post: any) => {
+const addLike = async(post: Post) => {
     if(!posts.value){
       return;
     }

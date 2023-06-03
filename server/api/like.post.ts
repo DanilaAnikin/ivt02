@@ -78,5 +78,5 @@ export default defineEventHandler(async(event) => {
         newCount = res.posts._count.likes
     }
 
-    return newCount
+    return newCount;
 })
