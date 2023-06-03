@@ -74,11 +74,12 @@ const disabledAddPost = computed(() => {
   return title.value === '' || content.value === '' ? true : false;
 });
 
-const canDeletePost = (post: any) => {
+const canDeletePost = (post: Post) => {
   if(!user.value){
     return;
   }
-  return post.user_id === user.value.id;
+
+  return post.user.user_id === user.value.id;
 }
 
 const addNewPost = async() => {
