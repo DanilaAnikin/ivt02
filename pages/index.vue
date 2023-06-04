@@ -28,6 +28,13 @@
         </div>
       </div>
     </div>
+    <div class="absolute top-5 right-5 text-slate-300" @click="changeTheme">
+      <SunIcon class="w-8 h-8" />
+      <span class="text-slate-200 dark:text-blue-500">theme</span>
+    </div>
+    <div>
+
+    </div>
   </div>
   <div v-if="addOpened" class="fixed top-0 backdrop-blur-md bg-slate-100/5 w-full h-full flex justify-center">
       <div class="max-w-sm w-full h-fit fixed border top-12 rounded-2xl bg-gray-700 py-4 px-5">
@@ -58,7 +65,7 @@
 <script setup lang="ts">
 import AddPostButton from '../components/AddPostButton.vue';
 import { PlusIcon, XMarkIcon, HeartIcon } from '@heroicons/vue/20/solid';
-import { TrashIcon } from '@heroicons/vue/24/outline';
+import { TrashIcon, SunIcon } from '@heroicons/vue/24/outline';
 import { ref, computed } from 'vue';
 import { type Post } from '../db';
 import dayjs from 'dayjs';
@@ -69,6 +76,7 @@ const user = useSupabaseUser();
 const addOpened = ref(false);
 const content = ref('');
 const title = ref('');
+
 
 const disabledAddPost = computed(() => {
   return title.value === '' || content.value === '' ? true : false;
@@ -82,6 +90,7 @@ const canDeletePost = (post: Post) => {
   return post.user.user_id === user.value.id;
 }
 
+
 const addNewPost = async() => {
   const response = await fetch('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json'}, body: JSON.stringify({ title: title.value, content: content.value })});
   const data = await response.json();
@@ -94,15 +103,14 @@ const addNewPost = async() => {
 }
 
 const deletePost = async(post: any) => {
-  const response = await fetch('api/posts', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ postId: post.id }) })
-  const data = await response.json();
+  await fetch('api/posts', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ postId: post.id }) })
   posts.value = posts.value.filter(thatPost => thatPost.id !== post.id);
 }
 
-const addLike = async(post: Post) => {
-    if(!posts.value){
-      return;
-    }
+const addLike = async( post: Post ) => {
+  if(!posts.value){
+    return;
+  }
 
   const response = await fetch('/api/like', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ postId: post.id, liked: !post.liked })})
   const data = await response.json();
@@ -112,13 +120,33 @@ const addLike = async(post: Post) => {
 
   posts.value[postIndex].likes = data;
   posts.value[postIndex].liked = !post.liked;
+}
 
+
+const changeTheme = () => {
+  console.log(localStorage.theme);
+  if (localStorage.theme === 'dark'){
+    localStorage.theme = 'light';
+    document.documentElement.classList.remove('dark');
+  } else {
+    localStorage.theme = 'dark';
+    document.documentElement.classList.add('dark');
+  }
+}
+
+const getTheme = () => {
+  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }
 }
 
 definePageMeta({
   middleware: 'auth'
 });
 
+onMounted(getTheme)
 
 </script>
 

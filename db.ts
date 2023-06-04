@@ -1,6 +1,4 @@
 import { Prisma, PrismaClient, posts } from "@prisma/client";
-import { UUID } from "crypto";
-import postsDelete from "./server/api/posts.delete";
 
 export const prisma = new PrismaClient();
 
@@ -9,7 +7,7 @@ export const includePost = Prisma.validator<Prisma.postsFindManyArgs>()({
     include: {
         users: {
             select: {
-                raw_user_meta_data: true
+                raw_user_meta_data: true,
             },
         },
         _count: {
